@@ -1,35 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { Platform, StyleSheet } from "react-native";
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { View } from "../components/Themed";
+import { Text } from "react-native-paper";
+import { Stack, useLocalSearchParams } from "expo-router";
 
 export default function ModalScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/modal.tsx" />
+  const { title } = useLocalSearchParams();
 
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-    </View>
+  // Makeshift type check
+  if (typeof title !== "string") throw new Error("Incorrect param passed");
+
+  return (
+    <>
+      <Stack.Screen
+        options={{
+          title,
+        }}
+      />
+      <View style={styles.container}>
+        <Text variant="titleLarge">Country Info</Text>
+        <Text variant="bodyLarge">
+          No cap, you'd be able to read more about the country you clicked on,
+          but the developer was short on time 😅
+        </Text>
+
+        {/* Use a light status bar on iOS to account for the black space above the modal */}
+        <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 12,
   },
 });
